@@ -92,9 +92,6 @@ The system supports:
 
 # 🏛️ System Architecture
 
-<div align="center">
-  <img src="docs/architecture_v1.png" width="85%">
-</div>
 
 The system consists of:
 
@@ -212,6 +209,7 @@ failure_rate
  HuggingFace Spaces deployment
 
 📁 File Structure
+```bash
 t2i-controllable-fast
 ├── training/
 │   ├── lora_train.py
@@ -244,6 +242,7 @@ t2i-controllable-fast
 │   ├── controlnet_canny_comparison.png
 │   └── perf_onnx_vs_pt.png
 └── README.md
+```
 
 🔑 License
 
