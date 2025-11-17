@@ -118,18 +118,18 @@ pip install onnxruntime-gpu
 pip install gradio
 ```
 
-2. Run Basic SD Inference
+## 2. Run Basic SD Inference
 python inference/pipeline_pt.py
 
-3. Launch Gradio UI
+## 3. Launch Gradio UI
 python ui/gradio_app.py
 
-4. Start API Server
+## 4. Start API Server
 uvicorn serving.app:app --host 0.0.0.0 --port 8000
 
 🖥️ Demo (UI + API)
 ✨ Gradio UI
-<div align="center"> <img src="docs/gradio_v1.png" width="80%"> </div>
+
 🔌 FastAPI Endpoints
 POST /generate
 {
@@ -147,26 +147,25 @@ GET /metrics
 
 Prometheus-style metrics.
 
-<div align="center"> <img src="docs/swagger_generate.png" width="75%"> </div>
 📈 Performance
 🔥 PyTorch Optimized vs ONNX Runtime
-<div align="center"> <img src="docs/perf_onnx_vs_pt.png" width="75%"> </div>
+
 Model	Device	Steps	P95 Latency	TPS
-PyTorch FP16	4090	20	2.4s	1.2
-torch.compile + xformers	4090	20	1.8s	1.6
-ONNX Runtime (FP16)	4090	20	1.2s	2.2
+PyTorch FP16	
+torch.compile + xformers	
+ONNX Runtime (FP16)
 🧪 Training (LoRA)
 Train Your Own LoRA
 python training/lora_train.py --config training/config.yaml
 
 Example Results
-<div align="center"> <img src="docs/lora_comparison.png" width="80%"> </div>
+
 🎛️ Controllability (ControlNet)
 Input → Output Example
-<div align="center"> <img src="docs/controlnet_canny_comparison.png" width="80%"> </div>
+
 🛡️ Safety & Content Filtering
 Pipeline
-<div align="center"> <img src="docs/safety_flow.png" width="80%"> </div>
+
 Rules
 
 Keyword filter
@@ -184,7 +183,7 @@ docker build -t t2i .
 Run
 docker run -p 8000:8000 t2i
 
-<div align="center"> <img src="docs/docker_run.png" width="70%"> </div>
+
 📡 Monitoring (Prometheus)
 
 Prometheus exposes:
@@ -197,7 +196,7 @@ gpu_memory_mb
 
 failure_rate
 
-<div align="center"> <img src="docs/prometheus_metrics.png" width="75%"> </div>
+
 🗺️ Project Roadmap
 
  SDXL support
