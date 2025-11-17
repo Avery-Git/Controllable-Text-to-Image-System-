@@ -116,6 +116,7 @@ pip install torch diffusers transformers accelerate xformers
 pip install fastapi uvicorn pillow opencv-python
 pip install onnxruntime-gpu
 pip install gradio
+```
 
 2. Run Basic SD Inference
 python inference/pipeline_pt.py
