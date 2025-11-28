@@ -103,6 +103,9 @@ The system consists of:
 - **Evaluation Layer** → CLIPScore/FID + Latency/Throughput tests  
 - **Safety Layer** → content filtering + rejection policies  
 
+## Architecture Diagram
+<img width="1348" height="1876" alt="architecture_v1" src="https://github.com/user-attachments/assets/6dc14d51-62c5-491d-8be4-a45d43cedb0c" />
+
 ---
 
 # ⚡ Quick Start
