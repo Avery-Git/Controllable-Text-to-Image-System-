@@ -158,8 +158,41 @@ Running `01_inference_baseline_pt.ipynb` produces the following baseline output:
 A minimal, reproducible SD1.5 inference pipeline (MVP) is now verified and ready for further optimization  
 (torch.compile, xFormers, ONNX Runtime, TensorRT, etc.).
 
-🖥️ Demo (UI + API)
-✨ Gradio UI
+## 🖥️ Gradio Demo (SD1.5 Baseline)
+
+A minimal interactive UI for the SD1.5 baseline text-to-image pipeline.
+
+Features:
+- Prompt input  
+- Inference steps slider  
+- CFG scale slider  
+- 512×512 output  
+- Real-time generation preview  
+
+### ▶️ Run Locally
+
+```
+python ui/gradio_app.py
+```
+
+### 📌 Source Code
+
+- Gradio App (Python):  
+  https://github.com/Avery-Git/Controllable-Text-to-Image-System-/blob/main/ui/gradio_app.py  
+
+- Gradio App (Colab Notebook):  
+  https://github.com/Avery-Git/Controllable-Text-to-Image-System-/blob/main/ui/gradio_app.ipynb  
+
+### 🌐 Live Demo
+
+(Temporary Gradio link — expires after Colab shuts down)
+
+https://b7b30e35070248c939.gradio.live/
+
+### 📸 UI Screenshot
+
+![Gradio UI](docs/gradio_v1.png)
+
 
 🔌 FastAPI Endpoints
 POST /generate
@@ -245,6 +278,13 @@ failure_rate
 📁 File Structure
 ```bash
 t2i-controllable-fast
+├── notebooks/
+│   ├── gradio_app.ipynb
+│   └── 01_inference_baseline_pt.ipynb
+├── outputs/
+│   └── baseline.png
+├── ui/
+│   └── gradio_app.py
 ├── training/
 │   ├── lora_train.py
 │   ├── data_prep.py
@@ -260,8 +300,6 @@ t2i-controllable-fast
 │   ├── app.py
 │   ├── queue.py
 │   └── monitor.py
-├── ui/
-│   └── gradio_app.py
 ├── eval/
 │   ├── quality.py
 │   ├── latency_throughput.py
@@ -270,13 +308,10 @@ t2i-controllable-fast
 │   ├── content_filter.py
 │   └── policy.yaml
 ├── docs/
+│   ├── gradio_v1.png
 │   ├── architecture_v1.png
 │   ├── environment_gpu_t4.png
 │   ├── sd15_inference_cat_moon_v1.png
-│   ├── gradio_v1.png
-│   ├── lora_comparison.png
-│   ├── controlnet_canny_comparison.png
-│   └── perf_onnx_vs_pt.png
 └── README.md
 ```
 
