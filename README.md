@@ -250,6 +250,8 @@ t2i-controllable-fast
 │   └── policy.yaml
 ├── docs/
 │   ├── architecture_v1.png
+│   ├── environment_gpu_t4.png
+│   ├── sd15_inference_cat_moon_v1.png
 │   ├── gradio_v1.png
 │   ├── lora_comparison.png
 │   ├── controlnet_canny_comparison.png
