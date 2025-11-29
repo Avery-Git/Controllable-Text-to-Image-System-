@@ -106,6 +106,9 @@ The system consists of:
 ## Architecture Diagram
 <img width="1348" height="1876" alt="architecture_v1" src="https://github.com/user-attachments/assets/6dc14d51-62c5-491d-8be4-a45d43cedb0c" />
 
+# Environment Setup
+![GPU](docs/environment_gpu_t4.png)
+![Inference](docs/sd15_inference_cat_moon_v1.png)
 ---
 
 # ⚡ Quick Start
