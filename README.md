@@ -137,8 +137,19 @@ python ui/gradio_app.py
 ## 4. Start API Server
 uvicorn serving.app:app --host 0.0.0.0 --port 8000
 
+# 📝 Notebooks (Google Colab)
+To reproduce the baseline inference on GPU (T4), use the official Colab notebook:
+👉 01_inference_baseline_pt.ipynb
+Open in Colab
+
 🖥️ Demo (UI + API)
 ✨ Gradio UI
+
+This notebook includes:
+Environment setup (T4, CUDA, PyTorch, Diffusers)
+SD1.5 baseline pipeline
+Baseline image generation
+Latency measurement
 
 🔌 FastAPI Endpoints
 POST /generate
