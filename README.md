@@ -138,8 +138,11 @@ uvicorn serving.app:app --host 0.0.0.0 --port 8000
 
 # 📝 Notebooks (Google Colab)
 To reproduce the baseline inference on GPU (T4), use the official Colab notebook:
+
 👉 01_inference_baseline_pt.ipynb
+
 [Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/01_inference_baseline_pt.ipynb)
+
 ![baseline](output/baseline.png)
 
 This notebook includes:
