@@ -107,6 +107,13 @@ The system consists of:
 <img width="1348" height="1876" alt="architecture_v1" src="https://github.com/user-attachments/assets/6dc14d51-62c5-491d-8be4-a45d43cedb0c" />
 
 # Environment Setup
+- GPU: Tesla T4 (via Google Colab)
+- CUDA: 12.4
+- Frameworks:
+    torch==2.x
+    diffusers==0.x
+    transformers==4.x
+    accelerate==0.x
 ![GPU](docs/environment_gpu_t4.png)
 ![Inference](docs/sd15_inference_cat_moon_v1.png)
 ---
