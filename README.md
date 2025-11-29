@@ -16,6 +16,7 @@ and a **FastAPI serving layer** with **Prometheus monitoring**.
 - [2. Key Features](#-key-features)
 - [3. System Architecture](#-system-architecture)
 - [4. Quick Start](#-quick-start)
+- 
 - [5. Demo (UI + API)](#-demo-ui--api)
 - [6. Performance](#-performance)
 - [7. Training (LoRA)](#-training-lora)
@@ -140,16 +141,16 @@ uvicorn serving.app:app --host 0.0.0.0 --port 8000
 # 📝 Notebooks (Google Colab)
 To reproduce the baseline inference on GPU (T4), use the official Colab notebook:
 👉 01_inference_baseline_pt.ipynb
-Open in Colab
-
-🖥️ Demo (UI + API)
-✨ Gradio UI
+[Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/01_inference_baseline_pt.ipynb)
 
 This notebook includes:
 Environment setup (T4, CUDA, PyTorch, Diffusers)
 SD1.5 baseline pipeline
 Baseline image generation
 Latency measurement
+
+🖥️ Demo (UI + API)
+✨ Gradio UI
 
 🔌 FastAPI Endpoints
 POST /generate
