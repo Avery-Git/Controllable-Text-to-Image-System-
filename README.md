@@ -181,7 +181,8 @@ python ui/gradio_app.py
   https://github.com/Avery-Git/Controllable-Text-to-Image-System-/blob/main/ui/gradio_app.py  
 
 - Gradio App (Colab Notebook):  
-  https://github.com/Avery-Git/Controllable-Text-to-Image-System-/blob/main/ui/gradio_app.ipynb  
+  [Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/gradio_app.ipynb)
+ 
 
 ### 🌐 Live Demo
 
