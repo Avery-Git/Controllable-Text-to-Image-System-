@@ -115,8 +115,6 @@ The system consists of:
     diffusers==0.x
     transformers==4.x
     accelerate==0.x
-![GPU](docs/environment_gpu_t4.png)
-![Inference](docs/sd15_inference_cat_moon_v1.png)
 ---
 
 # ⚡ Quick Start
@@ -142,6 +140,7 @@ uvicorn serving.app:app --host 0.0.0.0 --port 8000
 To reproduce the baseline inference on GPU (T4), use the official Colab notebook:
 👉 01_inference_baseline_pt.ipynb
 [Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/01_inference_baseline_pt.ipynb)
+![baseline](output/baseline.png)
 
 This notebook includes:
 Environment setup (T4, CUDA, PyTorch, Diffusers)
