@@ -143,13 +143,20 @@ To reproduce the baseline inference on GPU (T4), use the official Colab notebook
 
 [Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/01_inference_baseline_pt.ipynb)
 
-![baseline](output/baseline.png)
-
 This notebook includes:
 Environment setup (T4, CUDA, PyTorch, Diffusers)
 SD1.5 baseline pipeline
 Baseline image generation
 Latency measurement
+
+Running `01_inference_baseline_pt.ipynb` produces the following baseline output:
+
+![baseline](output/baseline.png)
+
+**Latency (T4, 25 steps): ~4.4 seconds**
+
+A minimal, reproducible SD1.5 inference pipeline (MVP) is now verified and ready for further optimization  
+(torch.compile, xFormers, ONNX Runtime, TensorRT, etc.).
 
 🖥️ Demo (UI + API)
 ✨ Gradio UI
