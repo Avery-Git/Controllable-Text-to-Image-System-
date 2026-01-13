@@ -207,6 +207,12 @@ GET /metrics
 Prometheus-style metrics.
 
 📈 Performance
+Performance Benchmarking (Tesla T4)
+| Optimization Level | Latency (512×512, 20 steps) | Throughput | Speedup |
+|---|---:|---:|---:|
+| Vanilla PyTorch (FP16) | 3.25 s | 0.30 img/s | 1.00x |
+| xFormers (Memory-Efficient) | 3.18 s | 0.31 img/s | 1.02x |
+Tech Note: The marginal speedup is due to PyTorch 2.x's built-in SDPA optimizations on the Turing architecture (T4). xFormers is integrated primarily for its memory footprint reduction during long-running serving sessions.
 🔥 PyTorch Optimized vs ONNX Runtime
 
 Model	Device	Steps	P95 Latency	TPS
