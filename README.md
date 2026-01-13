@@ -206,6 +206,22 @@ GET /metrics
 
 Prometheus-style metrics.
 
+### 5.2 Production-Style API (FastAPI)
+For large-scale integration and programmatic access, the system exposes a high-performance REST API.
+
+* **Endpoint**: `POST /generate`
+* **Feature**: Asynchronous request handling with graceful degradation (auto-fallback to SDPA if xformers is unavailable).
+* **Response**: Base64-encoded PNG strings for seamless frontend integration.
+
+#### API Validation Example:
+| Request Component | Value |
+| :--- | :--- |
+| **Health Check** | `{"status": "healthy", "gpu": "Tesla T4"}` |
+| **Latency** | ~3.5s per image |
+| **Data Protocol** | JSON with Base64 Image Payload |
+
+![API Success Case](docs/serving/api_test_success.png)
+
 📈 Performance
 Performance Benchmarking (Tesla T4)
 | Optimization Level | Latency (512×512, 20 steps) | Throughput | Speedup |
@@ -299,7 +315,8 @@ t2i-controllable-fast
 │   ├── gradio_app.ipynb
 │   ├── 01_inference_baseline_pt.ipynb
 │   ├── 02_inference_optimization_final.ipynb
-│   └── 03_controllability_controlnet_canny.ipynb
+│   ├── 03_controllability_controlnet_canny.ipynb
+│   └── 04_production_serving_fastapi.ipynb
 ├── outputs/
 │   └── baseline.png
 ├── ui/
@@ -332,6 +349,8 @@ t2i-controllable-fast
 │   │   ├── canny_edge.png
 │   │   ├── canny_output.png
 │   │   └── canny_triplet_v1.png
+│   ├── serving/                                
+│       └── api_test_success.png
 │   ├── gradio_v1.png
 │   ├── architecture_v1.png
 │   ├── environment_gpu_t4.png
