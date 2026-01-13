@@ -37,16 +37,16 @@
 ### 1. 环境对齐 (已在 Tesla T4 验证)
 为确保算子稳定性，请使用以下经验验证过的依赖版本：
 
-----------in!!!
+```bash
 # 核心依赖安装
 pip install torch==2.4.1 torchvision==0.19.1 --index-url https://download.pytorch.org/whl/cu121
 pip install xformers==0.0.28.post1 --no-deps
 pip install diffusers==0.30.0 transformers accelerate fastapi uvicorn opencv-python
-------------out!!!
+```
 
 ### 2. 启动服务
-* **REST API 服务**: ----------in!!! uvicorn serving.app:app --host 0.0.0.0 --port 8000 ------------out!!!
-* **交互式 UI**: ----------in!!! python ui/gradio_app.py ------------out!!!
+* **REST API 服务**: ```bash uvicorn serving.app:app --host 0.0.0.0 --port 8000 ```
+* **交互式 UI**: ```bash python ui/gradio_app.py ```
 
 ---
 
@@ -107,7 +107,7 @@ pip install diffusers==0.30.0 transformers accelerate fastapi uvicorn opencv-pyt
 
 ## 📁 项目结构 (File Structure)
 
-----------in!!!
+```bash
 t2i-controllable-fast
 ├── notebooks/           # 开发记录、测速与实验对比
 ├── serving/             # FastAPI 生产环境代码
@@ -115,7 +115,7 @@ t2i-controllable-fast
 ├── inference/           # 优化后的推理 Pipeline
 ├── docs/                # 项目资产、架构图与生成样张
 └── README.md
-------------out!!!
+```
 
 ---
 
