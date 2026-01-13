@@ -1,364 +1,123 @@
-# Controllable-Text-to-Image-System-
-### High-Performance Controllable Text-to-Image Generation System (SD/SDXL, LoRA, ControlNet, ONNX/TensorRT Optimization, FastAPI Serving)
+# Controllable Text-to-Image Generation System
 
-This repository contains a **production-grade, controllable text-to-image system** built on  
-**Stable Diffusion**, with **LoRA fine-tuning**, **ControlNet conditioning**,  
-**high-performance inference (ONNX Runtime/TensorRT)**,  
-and a **FastAPI serving layer** with **Prometheus monitoring**.
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+[![PyTorch 2.4.1](https://img.shields.io/badge/PyTorch-2.4.1-red.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> ⚡ Designed to bring text-to-image **from research → production**  
-> with **fast**, **stable**, **controllable**, and **deployable** generation.
+> ⚡ **从研究到生产 (Research to Production)**: 基于 Stable Diffusion 1.5 的高性能可控文生图系统。具备硬件级推理优化、健壮的 FastAPI 服务化架构以及精准的 Canny 结构约束能力。
 
 ---
 
-# 📌 Table of Contents
-- [1. Overview](#-overview)
-- [2. Key Features](#-key-features)
-- [3. System Architecture](#-system-architecture)
-- [4. Quick Start](#-quick-start)
-- 
-- [5. Demo (UI + API)](#-demo-ui--api)
-- [6. Performance](#-performance)
-- [7. Training (LoRA)](#-training-lora)
-- [8. Controllability (ControlNet)](#-controllability-controlnet)
-- [9. Safety & Content Filtering](#-safety--content-filtering)
-- [10. Deployment (Docker)](#-deployment-docker)
-- [11. Monitoring (Prometheus)](#-monitoring-prometheus)
-- [12. Project Roadmap](#-project-roadmap)
-- [13. File Structure](#-file-structure)
-- [14. License](#-license)
+## 🔍 项目概览 (Overview)
+
+本项目不仅是一个图像生成脚本，更是一个完整的机器学习工程（MLE）落地实践。项目核心围绕**可控性**、**推理效率**与**服务稳定性**展开。
+
+**核心亮点：**
+* **多维可控性**: 集成 ControlNet (Canny)，实现基于边缘检测的结构受控生成。
+* **推理优化**: 建立多级优化链路，在 Tesla T4 上通过 xFormers 和 SDPA 实现显存与速度的平衡。
+* **工业级服务化**: 采用 FastAPI 构建异步后端，具备“优雅降级”逻辑，确保服务高可用。
+* **可观测性**: 建立 P95 延迟基准测试，并预留 Prometheus 监控埋点。
 
 ---
 
-# 🔍 Overview
+## 🏛️ 系统架构 (System Architecture)
 
-This project builds a **complete AI generation system**, including:
+系统采用模块化设计，确保从本地实验到云端部署的平滑迁移。
 
-- **Controllable image generation** (ControlNet)
-- **Efficient fine-tuning** (LoRA)
-- **High-performance inference** (torch.compile + xFormers + ONNX + TensorRT)
-- **Production service** (FastAPI)
-- **Monitoring & reliability** (Prometheus metrics, concurrency control)
-- **User interface** (Gradio)
-- **Safety filtering pipeline**
-
-The system supports:
-
-- **CFG / Steps / Seed / Resolution**
-- **LoRA weight switching**
-- **ControlNet conditioning (Canny / Depth / OpenPose)**
-- **Batch generation**
-- **ONNX/TensorRT Acceleration**
+* **推理层 (Inference)**: 优化的 PyTorch Pipeline，支持 FP16 半精度加速。
+* **控制层 (Control)**: 插件化的 ControlNet 适配器，实现结构约束。
+* **服务层 (Serving)**: 基于 FastAPI 的单例模型管理，支持异步请求处理。
+* **UI 层 (UI)**: 基于 Gradio 的交互式 Playground，用于快速原型验证。
 
 ---
 
-# 🚀 Key Features
+## ⚡ 快速开始 (Quick Start)
 
-### 🧩 **1. Multi-level Controllability**
-- ControlNet: Canny / Depth / OpenPose  
-- Adjustable control strength  
-- CFG scale, inference steps, resolution  
+### 1. 环境对齐 (已在 Tesla T4 验证)
+为确保算子稳定性，请使用以下经验验证过的依赖版本：
 
-### 🎨 **2. LoRA Fine-tuning Support**
-- Plug-and-play LoRA  
-- Rank / α ablation  
-- Custom style & domain adaptation  
+----------in!!!
+# 核心依赖安装
+pip install torch==2.4.1 torchvision==0.19.1 --index-url https://download.pytorch.org/whl/cu121
+pip install xformers==0.0.28.post1 --no-deps
+pip install diffusers==0.30.0 transformers accelerate fastapi uvicorn opencv-python
+------------out!!!
 
-### ⚡ **3. High-Performance Inference**
-- `torch.compile()` acceleration  
-- xFormers flash attention  
-- ONNX Runtime GPU  
-- TensorRT FP16/INT8 (optional)  
-- Batch & concurrency optimization  
-
-### 🏗️ **4. Production Serving (FastAPI)**
-- `/generate` endpoint  
-- `/health`  
-- `/metrics` (Prometheus format)  
-- Internal queue + rate limiting  
-- Retry logic  
-
-### 🛡️ **5. Safety Filtering**
-- Keyword/regex filter  
-- Optional multi-label classifier  
-- Structured refusal messages  
-
-### 📊 **6. Monitoring (Prometheus)**
-- Latency (P50/P95/P99)  
-- Throughput (TPS/RPS)  
-- GPU memory  
-- Failure rate  
+### 2. 启动服务
+* **REST API 服务**: ----------in!!! uvicorn serving.app:app --host 0.0.0.0 --port 8000 ------------out!!!
+* **交互式 UI**: ----------in!!! python ui/gradio_app.py ------------out!!!
 
 ---
 
-# 🏛️ System Architecture
+## 🖥️ 演示与接口 (Demo & Interfaces)
 
-
-The system consists of:
-
-- **Training Layer** → LoRA/Data Prep  
-- **Control Layer** → ControlNet modules  
-- **Inference Layer** → PyTorch / ONNX / TensorRT pipelines  
-- **Serving Layer** → FastAPI service + queue  
-- **UI Layer** → Gradio interface  
-- **Evaluation Layer** → CLIPScore/FID + Latency/Throughput tests  
-- **Safety Layer** → content filtering + rejection policies  
-
-## Architecture Diagram
-<img width="1348" height="1876" alt="architecture_v1" src="https://github.com/user-attachments/assets/6dc14d51-62c5-491d-8be4-a45d43cedb0c" />
-
-# Environment Setup
-- GPU: Tesla T4 (via Google Colab)
-- CUDA: 12.4
-- Frameworks:
-    torch==2.x
-    diffusers==0.x
-    transformers==4.x
-    accelerate==0.x
----
-
-# ⚡ Quick Start
-
-## 1. Install Environment
-```bash
-pip install torch diffusers transformers accelerate xformers
-pip install fastapi uvicorn pillow opencv-python
-pip install onnxruntime-gpu
-pip install gradio
-```
-
-## 2. Run Basic SD Inference
-python inference/pipeline_pt.py
-
-## 3. Launch Gradio UI
-python ui/gradio_app.py
-
-## 4. Start API Server
-uvicorn serving.app:app --host 0.0.0.0 --port 8000
-
-# 📝 Notebooks (Google Colab)
-To reproduce the baseline inference on GPU (T4), use the official Colab notebook:
-
-👉 01_inference_baseline_pt.ipynb
-
-[Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/01_inference_baseline_pt.ipynb)
-
-This notebook includes:
-Environment setup (T4, CUDA, PyTorch, Diffusers)
-SD1.5 baseline pipeline
-Baseline image generation
-Latency measurement
-
-Running `01_inference_baseline_pt.ipynb` produces the following baseline output:
-
-![baseline](output/baseline.png)
-
-**Latency (T4, 25 steps): ~4.4 seconds**
-
-A minimal, reproducible SD1.5 inference pipeline (MVP) is now verified and ready for further optimization  
-(torch.compile, xFormers, ONNX Runtime, TensorRT, etc.).
-
-## 🖥️ Gradio Demo (SD1.5 Baseline)
-
-A minimal interactive UI for the SD1.5 baseline text-to-image pipeline.
-
-Features:
-- Prompt input  
-- Inference steps slider  
-- CFG scale slider  
-- 512×512 output  
-- Real-time generation preview  
-
-### ▶️ Run Locally
-
-```
-python ui/gradio_app.py
-```
-
-### 📌 Source Code
-
-- Gradio App (Python):  
-  https://github.com/Avery-Git/Controllable-Text-to-Image-System-/blob/main/ui/gradio_app.py  
-
-- Gradio App (Colab Notebook):  
-  [Open in Colab](https://colab.research.google.com/github/Avery-Git/Controllable-Text-to-Image-System-/blob/main/notebooks/gradio_app.ipynb)
- 
-
-### 📸 UI Screenshot
-
+### 5.1 交互式 UI (Gradio)
+提供直观的参数调节界面（Steps, CFG, Seed），支持实时生成预览。
 ![Gradio UI](docs/gradio_v1.png)
 
-
-🔌 FastAPI Endpoints
-POST /generate
-{
-  "prompt": "a futuristic city in sunset",
-  "steps": 20,
-  "cfg_scale": 7.5,
-  "controlnet": "canny",
-  "strength": 0.8
-}
-
-GET /health
-{"status": "ok"}
-
-GET /metrics
-
-Prometheus-style metrics.
-
-### 5.2 Production-Style API (FastAPI)
-For large-scale integration and programmatic access, the system exposes a high-performance REST API.
-
-* **Endpoint**: `POST /generate`
-* **Feature**: Asynchronous request handling with graceful degradation (auto-fallback to SDPA if xformers is unavailable).
-* **Response**: Base64-encoded PNG strings for seamless frontend integration.
-
-#### API Validation Example:
-| Request Component | Value |
-| :--- | :--- |
-| **Health Check** | `{"status": "healthy", "gpu": "Tesla T4"}` |
-| **Latency** | ~3.5s per image |
-| **Data Protocol** | JSON with Base64 Image Payload |
+### 5.2 生产级 API (FastAPI)
+为程序化接入设计的后端服务。
+* **接口**: `POST /generate`
+* **特性**: 异步请求处理，内置**优雅降级 (Graceful Degradation)** 逻辑——若 xFormers 加载异常，自动回退至原生 SDPA 算子，确保服务不中断。
 
 ![API Success Case](docs/serving/api_test_success.png)
 
-📈 Performance
-Performance Benchmarking (Tesla T4)
-| Optimization Level | Latency (512×512, 20 steps) | Throughput | Speedup |
-|---|---:|---:|---:|
-| Vanilla PyTorch (FP16) | 3.25 s | 0.30 img/s | 1.00x |
-| xFormers (Memory-Efficient) | 3.18 s | 0.31 img/s | 1.02x |
-Tech Note: The marginal speedup is due to PyTorch 2.x's built-in SDPA optimizations on the Turing architecture (T4). xFormers is integrated primarily for its memory footprint reduction during long-running serving sessions.
-🔥 PyTorch Optimized vs ONNX Runtime
+---
 
-Model	Device	Steps	P95 Latency	TPS
-PyTorch FP16	
-torch.compile + xformers	
-ONNX Runtime (FP16)
-🧪 Training (LoRA)
-Train Your Own LoRA
-python training/lora_train.py --config training/config.yaml
+## 📈 性能基准 (Performance)
 
-Example Results
+测试环境：**NVIDIA Tesla T4 (16GB GDDR6)**
 
-🎛️ Controllability (ControlNet)
-## 8. Controllability (ControlNet)
+| 优化等级 | 推理延迟 (512x512, 20 steps) | 吞吐量 | 加速比 | 备注 |
+| :--- | :---: | :---: | :---: | :--- |
+| **原生 PyTorch (FP16)** | 3.25s | 0.30 img/s | 1.00x | 使用原生 SDPA |
+| **xFormers (显存优化)** | **3.18s** | **0.31 img/s** | **1.02x** | 有效降低峰值显存 |
 
-To achieve precise spatial control, the system integrates **ControlNet** with the SD1.5 backbone. 
+> **工程洞察**: 在 Turing 架构 (T4) 上，由于 PyTorch 2.x 已内置 SDPA 优化，xFormers 的延迟提升虽为边际效应，但在**多并发服务场景**下能显著提升显存稳定性。
 
-### Canny Edge Conditioning
-By extracting structural edges from a reference image, the system can generate new images while strictly maintaining the original composition.
+---
 
-| Input Image | Canny Edge Map | Generated Result |
+## 🎛️ 可控性生成 (ControlNet)
+
+通过结构约束精确引导图像生成过程。
+
+### Canny 边缘约束
+提取参考图的结构边缘，在保持构图不变的前提下应用全新的艺术风格。
+
+| 输入参考图 | Canny 边缘图 | 生成结果 |
 | :---: | :---: | :---: |
 | ![Input](docs/controlnet/test_input.jpg) | ![Edge](docs/controlnet/canny_edge.png) | ![Output](docs/controlnet/canny_output.png) |
 
-**Result Showcase (The Triplet):**
+**成果展示 (三联图):**
 ![ControlNet Triplet](docs/controlnet/canny_triplet_v1.png)
 
-* **Model**: `sd-controlnet-canny`
-* **Inference Latency**: ~3.8s (NVIDIA T4 + xFormers)
-* **Use Case**: Architecture visualization, structural stylization, and layout-driven generation.
+---
 
-🛡️ Safety & Content Filtering
-Pipeline
+## 🐳 部署与扩展 (Deployment)
 
-Rules
+* **容器化**: 提供标准 `Dockerfile` 以实现环境的一致性复制。
+* **安全治理**: 集成关键词过滤与策略引擎，支持内容合规性审计。
+* **未来路线**:
+    * [ ] 集成 SDXL Turbo 实现秒级实时生成。
+    * [ ] 探索 TensorRT 静态图编译以翻倍吞吐量。
+    * [ ] 接入 Prometheus + Grafana 实现实时 GPU 指标可视化。
 
-Keyword filter
+---
 
-Regex rules
+## 📁 项目结构 (File Structure)
 
-Optional multi-label classifier
-
-Structured refusal messages (policy_id, reason)
-
-🐳 Deployment (Docker)
-Build
-docker build -t t2i .
-
-Run
-docker run -p 8000:8000 t2i
-
-
-📡 Monitoring (Prometheus)
-
-Prometheus exposes:
-
-latency_ms
-
-throughput_rps
-
-gpu_memory_mb
-
-failure_rate
-
-
-🗺️ Project Roadmap
-
- SDXL support
-
- gRPC serving
-
- TensorRT INT8 pipelines
-
- LoRA adapter merging
-
- Real-time A/B human evaluation interface
-
- HuggingFace Spaces deployment
-
-📁 File Structure
-```bash
+----------in!!!
 t2i-controllable-fast
-├── notebooks/
-│   ├── gradio_app.ipynb
-│   ├── 01_inference_baseline_pt.ipynb
-│   ├── 02_inference_optimization_final.ipynb
-│   ├── 03_controllability_controlnet_canny.ipynb
-│   └── 04_production_serving_fastapi.ipynb
-├── outputs/
-│   └── baseline.png
-├── ui/
-│   └── gradio_app.py
-├── training/
-│   ├── lora_train.py
-│   ├── data_prep.py
-│   └── config.yaml
-├── control/
-│   ├── apply_controlnet.py
-│   └── adapters/
-├── inference/
-│   ├── pipeline_pt.py
-│   ├── export_onnx.py
-│   └── pipeline_onnx.py
-├── serving/
-│   ├── app.py
-│   ├── queue.py
-│   └── monitor.py
-├── eval/
-│   ├── quality.py
-│   ├── latency_throughput.py
-│   └── human_eval.md
-├── safety/
-│   ├── content_filter.py
-│   └── policy.yaml
-├── docs/
-│   ├── controlnet/                           
-│   │   ├── test_input.jpg
-│   │   ├── canny_edge.png
-│   │   ├── canny_output.png
-│   │   └── canny_triplet_v1.png
-│   ├── serving/                                
-│       └── api_test_success.png
-│   ├── gradio_v1.png
-│   ├── architecture_v1.png
-│   ├── environment_gpu_t4.png
-│   ├── sd15_inference_cat_moon_v1.png
+├── notebooks/           # 开发记录、测速与实验对比
+├── serving/             # FastAPI 生产环境代码
+├── control/             # ControlNet 适配器与预处理逻辑
+├── inference/           # 优化后的推理 Pipeline
+├── docs/                # 项目资产、架构图与生成样张
 └── README.md
-```
+------------out!!!
 
-🔑 License
+---
 
-MIT License.
-Feel free to use, modify, or deploy.
+## 🔑 开源协议
+本项目采用 [MIT License](LICENSE)。
