@@ -226,7 +226,23 @@ python training/lora_train.py --config training/config.yaml
 Example Results
 
 🎛️ Controllability (ControlNet)
-Input → Output Example
+## 8. Controllability (ControlNet)
+
+To achieve precise spatial control, the system integrates **ControlNet** with the SD1.5 backbone. 
+
+### Canny Edge Conditioning
+By extracting structural edges from a reference image, the system can generate new images while strictly maintaining the original composition.
+
+| Input Image | Canny Edge Map | Generated Result |
+| :---: | :---: | :---: |
+| ![Input](docs/controlnet/test_input.jpg) | ![Edge](docs/controlnet/canny_edge.png) | ![Output](docs/controlnet/canny_output.png) |
+
+**Result Showcase (The Triplet):**
+![ControlNet Triplet](docs/controlnet/canny_triplet_v1.png)
+
+* **Model**: `sd-controlnet-canny`
+* **Inference Latency**: ~3.8s (NVIDIA T4 + xFormers)
+* **Use Case**: Architecture visualization, structural stylization, and layout-driven generation.
 
 🛡️ Safety & Content Filtering
 Pipeline
