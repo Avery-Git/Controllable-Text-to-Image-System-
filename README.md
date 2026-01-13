@@ -297,7 +297,9 @@ failure_rate
 t2i-controllable-fast
 ├── notebooks/
 │   ├── gradio_app.ipynb
-│   └── 01_inference_baseline_pt.ipynb
+│   ├── 01_inference_baseline_pt.ipynb
+│   ├── 02_inference_optimization_final.ipynb
+│   └── 03_controllability_controlnet_canny.ipynb
 ├── outputs/
 │   └── baseline.png
 ├── ui/
@@ -325,6 +327,11 @@ t2i-controllable-fast
 │   ├── content_filter.py
 │   └── policy.yaml
 ├── docs/
+│   ├── controlnet/                           
+│   │   ├── test_input.jpg
+│   │   ├── canny_edge.png
+│   │   ├── canny_output.png
+│   │   └── canny_triplet_v1.png
 │   ├── gradio_v1.png
 │   ├── architecture_v1.png
 │   ├── environment_gpu_t4.png
